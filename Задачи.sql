@@ -1,23 +1,23 @@
-/*1 вопрос*/
+/*1 РІРѕРїСЂРѕСЃ*/
 SELECT DISTINCT name
-FROM Рейсы LEFT JOIN Пилоты ON Рейсы.second_pilot_id = Пилоты.pilot_id 
-WHERE MONTH(flight_dt) = 8 AND YEAR(flight_dt) = YEAR(GETDATE()) AND destination = 'Шереметьево' 
+FROM Р РµР№СЃС‹ LEFT JOIN РџРёР»РѕС‚С‹ ON Р РµР№СЃС‹.second_pilot_id = РџРёР»РѕС‚С‹.pilot_id 
+WHERE MONTH(flight_dt) = 8 AND YEAR(flight_dt) = YEAR(GETDATE()) AND destination = 'РЁРµСЂРµРјРµС‚СЊРµРІРѕ' 
 
-/*2 вопрос*/
-SELECT (SELECT name FROM Пилоты WHERE T.pilot_id = Пилоты.pilot_id) AS name
+/*2 РІРѕРїСЂРѕСЃ*/
+SELECT (SELECT name FROM РџРёР»РѕС‚С‹ WHERE T.pilot_id = РџРёР»РѕС‚С‹.pilot_id) AS name
 FROM (SELECT pilot_id
-	  FROM Рейсы LEFT JOIN Самолеты ON Рейсы.plane_id = Самолеты.plane_id LEFT JOIN Пилоты ON Рейсы.first_pilot_id = Пилоты.pilot_id
+	  FROM Р РµР№СЃС‹ LEFT JOIN РЎР°РјРѕР»РµС‚С‹ ON Р РµР№СЃС‹.plane_id = РЎР°РјРѕР»РµС‚С‹.plane_id LEFT JOIN РџРёР»РѕС‚С‹ ON Р РµР№СЃС‹.first_pilot_id = РџРёР»РѕС‚С‹.pilot_id
 	  WHERE cargo_flg = 1 AND age > 45
 	  UNION ALL 
 	  SELECT pilot_id
-	  FROM Рейсы LEFT JOIN Самолеты ON Рейсы.plane_id = Самолеты.plane_id LEFT JOIN Пилоты ON Рейсы.second_pilot_id = Пилоты.pilot_id
+	  FROM Р РµР№СЃС‹ LEFT JOIN РЎР°РјРѕР»РµС‚С‹ ON Р РµР№СЃС‹.plane_id = РЎР°РјРѕР»РµС‚С‹.plane_id LEFT JOIN РџРёР»РѕС‚С‹ ON Р РµР№СЃС‹.second_pilot_id = РџРёР»РѕС‚С‹.pilot_id
 	  WHERE cargo_flg = 1 AND age > 45) AS T
 GROUP BY pilot_id
 HAVING COUNT(pilot_id) > 30
 
-/*3 вопрос*/
-SELECT TOP 10 (SELECT name FROM Пилоты WHERE Пилоты.pilot_id = Рейсы.first_pilot_id) AS name
-FROM Рейсы
+/*3 РІРѕРїСЂРѕСЃ*/
+SELECT TOP 10 (SELECT name FROM РџРёР»РѕС‚С‹ WHERE РџРёР»РѕС‚С‹.pilot_id = Р РµР№СЃС‹.first_pilot_id) AS name
+FROM Р РµР№СЃС‹
 WHERE YEAR(flight_dt) = YEAR(GETDATE())
 GROUP BY first_pilot_id
 ORDER BY SUM(quantity) DESC
