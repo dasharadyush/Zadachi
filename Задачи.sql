@@ -1,7 +1,7 @@
 /*1 вопрос*/
 SELECT DISTINCT name
 FROM Рейсы LEFT JOIN Пилоты ON Рейсы.second_pilot_id = Пилоты.pilot_id 
-WHERE MONTH(flight_dt) = 8 AND YEAR(flight_dt) = YEAR(GETDATE()) AND destination = 'Шереметьево' 
+WHERE YEAR(flight_dt) = YEAR(GETDATE()) AND MONTH(flight_dt) = 8 AND destination = 'Шереметьево' 
 
 /*2 вопрос*/
 SELECT (SELECT name FROM Пилоты WHERE T.pilot_id = Пилоты.pilot_id) AS name
@@ -17,7 +17,7 @@ HAVING COUNT(pilot_id) > 30
 
 /*3 вопрос*/
 SELECT TOP 10 (SELECT name FROM Пилоты WHERE Пилоты.pilot_id = Рейсы.first_pilot_id) AS name
-FROM Рейсы
-WHERE YEAR(flight_dt) = YEAR(GETDATE())
+FROM Рейсы LEFT JOIN Самолеты ON Рейсы.plane_id = Самолеты.plane_id
+WHERE cargo_flg = 0 AND YEAR(flight_dt) = YEAR(GETDATE())
 GROUP BY first_pilot_id
 ORDER BY SUM(quantity) DESC
